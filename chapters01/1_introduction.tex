@@ -1,0 +1,77 @@
+Reliable data delivery is highly desirable for Internet users, in particular, for security-critical services enabled in ISPs, enterprises, and datacenter networks \cite{zeng2012automatic}, which requires correct packet delivery along the desired forwarding paths and with the authentic origin. 
+However, the current design of Internet always suffers from packet source spoofing and traffic hijacking attacks. % due to the existence of misconfiguration or attacks. %These network vulnerabilities are commonly used by attackers for carrying out malicious activities, such as Man in the middle (MiTM) \cite{desmedt2011man}, DoS/DDoS attacks (e.g., refection \cite{reflectionattack} and DNS amplification \cite{dnsamplificationattack}) and traffic redirection. 
+It is difficult to identify such attacks in real time. 
+Existing troubleshooting tools, e.g., ping and traceroute, cannot effectively identify and localize faults.  Various attacks can be launched to generate packets with fake packet origins and hijack forwarding path~\cite{kim2014lightweight}. %, and eavesdrop private information. 
+Thus, it is necessary to enable data-plane fault localization to ensure correct packet forwarding on the Internet.
+%for source and path verification is an essential remediation for securing data delivery.\\
+%In this case, many attacks can be launched to counterfeit packet origins, change forwaarding path, eavesdrop private information, and increase transmission overhead.\\
+%The current Internet is vulnerable to various types of the inconsistency between data plane and control plane, due to either malicious attacks, such as source spoofing and flow hijacking, or network misconfiguration, such as operator's incorrect manipulation. Unfortunately, some simple methods like ping, traceroute, etc. can not satisfy the requirement to detect and localize this inconsistency as the malicious intermediate router(s) can disturb (drop, modify) the detection packets. Consequently, there is no reliable assurance provided for the current network to detect this inconsistency, allowing counterfeited packet origins, eavesdropping private information and increased transmission overhead. Thus, detecting the data-plane source authenticity and path compliance is high desired to identify, localize the misbehaver \cite{zeng2012automatic}. By repairing or avoiding the misbehaved router from the forwarding path, many attacks caused by this inconsistency can be mitigated, bring more secure end-to-end communication.
+%\vspace{-0.03cm}
+
+%\textcolor{red}{In particular, under unreliable communication channels, which allows network entities on it to interfere with fault localization by dropping, modifying and redirecting packets.} 
+
+%\indent
+In order to address this issue, end-to-end source authentication \cite{liu2008passport} \cite{perrig2001efficient} and path validation \cite{parno2008snapp} \cite{zhao2005aggregated} \cite{kent2000secure} have been extensively studied. %to mitigate the source spoofing and path
+% inconsistency attacks.
+They verify packet origins and forwarding paths by embedding cryptographic tags (or markings) to localize faults in packet forwarding. 
+However, they assume that the packets used to verify markings can be correctly delivered over reliable communication channels. However, it is not always true because the channels to deliver packets are not always reliable due to attacks or network failure \cite{miles1992causes} \cite{basescu2016high} \cite{schrank2011anatomy}. Especially, an adversary can interfere and drop the packets of fault localization. Therefore, none of the existing schemes can accurately localize faults in unreliable networks without the help of centralized servers. For example, OPT \cite{kim2014lightweight} and OSV \cite{cai2015source} perform source authentication and path validation by acknowledging received packets. %with either lightweight or efficient routers; 
+Without packet acknowledgment from intermediate routers and packet receivers, the packet sources cannot correctly localize the misbehaved routers. Existing fault localization mechanisms \cite{basescu2016high} \cite{zhang2012shortmac} cannot localize malicious entities if the localization packets are delivered over unreliable transmission channels. Meanwhile, centralized localization mechanisms \cite{zhang2016mind} \cite{zhang2012secure} only localize attacks by leveraging central controllers, which is not easy to achieve in practice. % to localize the attacks.\\
+
+%\indent
+Therefore, robust data-plane fault localization that can tolerate unreliable communication channels is not well addressed. Fortunately, we find that source authentication and path validation can be still an effective approach to localizing faults in networks. % \textcolor{red}{for packet source such that the packets can be detoured around the faults.} 
+However, it is still not easy to realize accurate fault localization. As we mentioned above, traditional fault localization cannot be tolerant to unreliable communication channels. Specifically, it should be able to tolerate interference from various adversaries, e.g., packet dropping, modification, and packet hijacking. %redirect attacks to interfere with the localization.
+% should be defended under unreliable packet transmission, when the desired mechanism retains high efficiency and low overhead.
+Moreover, fault localization should not incur significant communication overhead in networks so that it will not significantly impact the performance of packet forwarding. %\\
+%Firstly, as we mentioned above, to  %because of the following two reasons. %detect and localize compromised or misconfigured routers so as to detour around the faults.
+%, which can be utilized for two vital purposes. First, by performing source and path verification
+%many malicious attacks like source spoofing and flow interception can be avoided, enhancing the forwarding reliability. Second, it provides fault localization of misbehaved routers that jeopardize traffic transmission, thus contributing to later repairing network faults or removing the offending router from the forwarding path to enhance the security of packet delivery.\\ %%Actually, it is challenging to achieve the goal.
+%Actually, it is challenging to achieve the goal.
+%\indent
+%Unfortunately, exiting data-plane fault localization suffers from robustness and lightweight challenges with the possible existence of strong adversaries, especially in unreliable transmission channel (UTC). UTC allows the sophisticated attacks (e.g., framing and collusion attack) to disturb fault localization and make it insecure or heavy-weight. Besides, the misbehaved router can destroy fault localization by dropping, redirecting and modifying \emph{request}/\emph{ack} packet, causing the failure of fault localization for source authenticity and path compliance. Simply specking, the misbehaved router in UTC can try its best to disturb or destroy any forms of fault localization to elude the capture from the source.\\
+%launch attacks for disturbing secret key distribution by dropping, redirecting and modifying key distribution message, making the whole detection solutions fall into a paralyzed state due to lacking the secret key. Besides, sophisticated attacks (e.g., collusion and framing attacks) tend to destroy the verification and obstruct localization message delivery, causing the failed detection for source and path. Simply speaking, the packets of both secret key distribution and consistency detection are all delivered \textbf{under unreliable network}, where many security threats can disturb any detection mechanisms.\\
+%\indent
+%This paper aims to enable robust and lightweight fault localization in an unreliable network channel, including end-to-end source and path verification, and fault localization in data plane. More specifically, the packet dropping, modification and redirection attacks should be defended under unreliable packet transmission, when the desired mechanism retains high efficiency and low overhead.
+%\indent
+
+In this paper, we propose \name{}, a robust fault localization protocol, which ensures source authenticity and forwarding path compliance, even if localization is performed under unreliable communication channels. 
+%\name{} enables robust fault localization in networks, especially for \textcolor{red}{symmetric key distribution} and packet delivery.
+\name{} leverages a packet marking mechanism to sample and verify the packets, which allows packet sources to efficiently acknowledge and verify the sent packets. In particular, it enables robust key sharing among different entities so that they can always have the correct keys to perform localization.   
+%Thereby, it ensures correct fault localization in unreliable networks.
+%such that keys cannot be utilized to used  and can localize faulty entities. Concretely, one
+\name{} maintains a timer for each entity to packets for localization, which allows they to request correct packets and drop unsolicited packets if the packets are dropped, modified, and hijacked during secret key distribution and packet verification. %Thereby, each entity can effectively perform source and path verification to filter unwanted packets. 
+Thereby, each entity can effectively perform source and path verification with correct keys.  
+Moreover, \name{} uses a probabilistic sampling function to sample and verify packets at each hop, which efficiently verifies packets and localizes faults while significantly reducing the overhead incurred by verification. 
+%according . 
+%By collecting the sampling information in each entity, the packet source can identify and localize the misbehaved entity. By such a probabilistic sampling mechanism, \name{} significantly reduces the overhead incurred by packet verification. 
+%Compared with the existing fault localization schemes, 
+%overhead. %. %More specifically, RFL can also make packet origins and path verified at each hop with high efficiency and low verification latency.\\
+%We aim to fill the vacancy between the higher demands on authentic origins as well as reliable path and the absence of data-plane consistency detection. The desired mechanism should provides more secure source and path detection, including the verification and fault localization. More specifically, the packet dropping, modification and redirection attacks should be defended under unreliable packet transmission, when the desired mechanism retains high efficiency and low overhead.
+%In this paper, we propose \emph{SPdetect} (Source and Path detection) protocol, a secure and robust detection mechanism to guarantee source authenticity and path compliance with fault localization on the misbehaved router. \emph{SPdetect} provides higher security assurance for secret key distribution and packet delivery against sophisticated adversaries under unreliable transmission, and can identify the faults for locating and removing them. Concretely, one timer is set at each node, which will expire if the packet is dropped, modified and redirected when the secret key is distributed. Each node performs source and path verification to filter the illegal packets. Meanwhile, the packets will be sampled at each hop according a probabilistic sampling function. Based on the sampling information of each node, the source can identify and localize the misbehaved router. More specifically, \emph{SPdetect} can also make packet origins and path verified at each hop with high efficiency and low verification latency.
+%\indent
+We qualitatively analyze the overhead of \name{}. The theoretical analysis shows \name{} introduces small overhead. For example, it only incurs around 6.03\% communication overhead, which significantly outperforms the existing schemes. %Besides, each router's storage overhead is only 3.23 MB in the average network environment.
+We prototype \name{} upon the Click Modular Router and use experimental results to demonstrate the performance of \name{}. The experimental results show that \name{} achieves more than 99.5\% localization accuracy, and obtains more than 90\% throughput and 85\% goodput. %, which . % of baseline for large packet. For the average path length of the Internet, RFL enables each router respectively achieve over 850 Mbps throughput and 800 Mbps goodput under 1000Mbps NIC. More especially, the fault localization can be achieved with the accuracy of over 99.5\%.
+Therefore, \name{} provides robust fault localization, while incurring negligible performance overhead. 
+%, while ensuring correctness of localization.\\
+%\indent
+%\textcolor{red}{The main challenge faced by \name{} is unreliable communication channels can tolerate network entities to interfere with fault localization during symmetric key distribution and packet verification, such as modify, drop and redirect request or ack packet. %Lacking acknowledgements, the source can not detect and localize the misbehaved entity. 
+%Our proposed \name{} addresses this problem, and enables each entity to set up a timer when receiving request packet from {\tt S}. Once the interference occurs, the timer will expire and make the entity send ack packet to {\tt S}. Using ack packets, {\tt S} can localize the fault accurately, which ensures both symmetric key distribution and packet delivery verification.} 
+
+The contributions of this paper are four-fold:
+%\vspace{-0.1in}
+\begin{itemize}
+%\vspace{-0.1in}
+
+\item We propose \name{}, a scheme ensures fault localization for the reliable data delivery, which tolerates interference from unreliable communication channels and does not require the help of central servers.
+
+\item We develop a robust secret key sharing scheme (called \namekey{}) that achieves secure and robust symmetric key establishment over the unreliable communication channels.
+
+\item We design algorithms to verify source authenticity and correct packet forwarding paths, which can defend against various source spoofing and traffic hijacking attacks.
+
+%\vspace{-0.08in}
+%\item \name{} protocol also enables a robust fault localization that can localize misbehaved entities during the source and path verification.
+%\vspace{-0.22in}
+\item We perform the security and theoretical analysis of \name{}, and use real experiment upon the \name{} prototype to demonstrate the performance of \name{}. 
+\end{itemize}
+
+The remainder of this paper is organized as follows: in Section \ref{problemstatement}, we present our problem statement, including adversary model, desired properties, problem formulation, and scope and assumptions. In Section \ref{spmoniprotocoloverview}, a high-level overview of \name{} protocol is provided. In Section \ref{lakeysection}, \ref{sourceandpathverificationsection} and \ref{faultlocalization}, we introduce the design details of \name{} protocol, including a robust symmetric key distribution, source and path verification, and fault localization. We respectively make some security analysis and theoretical analysis of \name{} protocol in Section \ref{securityanalysis} and \ref{theoreticalanalysis}. In Section \ref{performanceevaluation}, the experimental performance and evaluation are presented.%, and in Section \ref{discussion}, we discuss a number of issues and extensions relating to \name{}.
+We cover the related work in the field of source authentication and path validation in Section \ref{relatedwork}. Finally, we conclude in Section \ref{conclusionsection}. 
